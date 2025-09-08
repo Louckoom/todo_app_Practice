@@ -1,5 +1,16 @@
-# Vue 3 + Vite
+# TODO App PRACTICE
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Practice Vue.js while creating a smart todo app.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+WIP :
+
+- Created header with search bar, group by & sort by button, and name of the app.
+- Create customized Todo items that can be add with a add todo button.
+- Adding primitive styling and functionnality for the todo items that can be edited.
+
+NEXT :
+
+- Create interactivty with actions button check, delete & add sub todo.
+- Add functionnality part for search bar, group by & sort by buttons.
+- Add custom 3D action button and animations to the app.
+- Styling all the app properly.
