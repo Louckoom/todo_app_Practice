@@ -6,6 +6,7 @@
       :todo="todo"
       @check-todo="checkTodo"
       @delete-todo="deleteTodo"
+      @add-sub-todo="addSubTodo"
     />
 
     <AddTodoButton @add-todo="addTodo" />
@@ -37,6 +38,7 @@
       id: Date.now(),
       text: "Nouvelle tâche",
       completed: false,
+      subTodos: []
     };
     todos.value.push(newTodo);
   };
@@ -47,6 +49,19 @@
       todo.completed = !todo.completed;
     }
   };
+
+  const addSubTodo = (parentId) => {
+  const parentTodo = todos.value.find(t => t.id === parentId);
+  if (parentTodo) {
+    const newSubTodo = {
+      id: Date.now(),
+      text: "Nouvelle sous-tâche",
+      completed: false,
+      subTodos: []
+    };
+    parentTodo.subTodos.push(newSubTodo);
+  }
+};
 
   const deleteTodo = (id) => {
     todos.value = todos.value.filter(t => t.id !== id);

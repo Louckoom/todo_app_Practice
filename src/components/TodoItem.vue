@@ -51,7 +51,7 @@
         <v-icon>mdi-close-circle-outline</v-icon>
       </v-btn>
 
-      <v-btn v-if="!isEditing" icon color="blue" class="mx-1">
+      <v-btn v-if="!isEditing" icon color="blue" class="mx-1" @click="emit('add-sub-todo', todo.id)">
         <v-icon>mdi-plus-circle-outline</v-icon>
       </v-btn>
     </v-card-text>
@@ -65,7 +65,7 @@ const props = defineProps({
   todo: Object,
 });
 
-const emit = defineEmits(['check-todo', 'delete-todo']);
+const emit = defineEmits(['check-todo', 'delete-todo','add-sub-todo']);
 
 const isEditing = ref(false);
 
