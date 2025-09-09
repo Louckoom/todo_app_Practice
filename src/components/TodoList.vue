@@ -4,6 +4,8 @@
       v-for="todo in todos"
       :key="todo.id"
       :todo="todo"
+      @check-todo="checkTodo"
+      @delete-todo="deleteTodo"
     />
 
     <AddTodoButton @add-todo="addTodo" />
@@ -11,22 +13,42 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, watch, onMounted } from 'vue';
   import TodoItem from './TodoItem.vue';
   import AddTodoButton from './AddTodoButton.vue';
 
-  // Crée une variable réactive pour stocker la liste des tâches
   const todos = ref([]);
 
-  // Fonction pour ajouter une tâche
+  // Récupère les données du localStorage au chargement de la page
+  onMounted(() => {
+    const savedTodos = localStorage.getItem('todos');
+    if (savedTodos) {
+      todos.value = JSON.parse(savedTodos);
+    }
+  });
+
+  // Sauvegarde les données dans le localStorage à chaque modification
+  watch(todos, (newTodos) => {
+    localStorage.setItem('todos', JSON.stringify(newTodos));
+  }, { deep: true });
+
   const addTodo = () => {
-    // Crée une nouvelle tâche avec un ID unique et un texte par défaut
     const newTodo = {
-      id: Date.now(), // Un identifiant unique
+      id: Date.now(),
       text: "Nouvelle tâche",
       completed: false,
     };
-    // Ajoute la nouvelle tâche à la fin de notre tableau
     todos.value.push(newTodo);
+  };
+
+  const checkTodo = (id) => {
+    const todo = todos.value.find(t => t.id === id);
+    if (todo) {
+      todo.completed = !todo.completed;
+    }
+  };
+
+  const deleteTodo = (id) => {
+    todos.value = todos.value.filter(t => t.id !== id);
   };
 </script>
