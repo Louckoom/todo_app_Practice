@@ -55,6 +55,17 @@
         <v-icon>mdi-plus-circle-outline</v-icon>
       </v-btn>
     </v-card-text>
+    
+    <v-card-text v-if="todo.subTodos && todo.subTodos.length > 0" class="pl-12">
+        <TodoItem
+          v-for="subTodo in todo.subTodos"
+          :key="subTodo.id"
+          :todo="subTodo"
+          @check-todo="emit('check-todo', $event)"
+          @delete-todo="emit('delete-todo', $event)"
+          @add-sub-todo="emit('add-sub-todo', $event)"
+        />
+    </v-card-text>
   </v-card>
 </template>
 
@@ -65,7 +76,7 @@ const props = defineProps({
   todo: Object,
 });
 
-const emit = defineEmits(['check-todo', 'delete-todo','add-sub-todo']);
+const emit = defineEmits(['check-todo', 'delete-todo', 'add-sub-todo']);
 
 const isEditing = ref(false);
 
@@ -75,26 +86,5 @@ const saveEdit = () => {
 </script>
 
 <style scoped>
-.bordered {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.editable-text {
-  cursor: pointer;
-  padding: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.editable-text:hover {
-  background-color: #f5f5f5;
-}
-
-.completed-card {
-  background-color: #f0fff0 !important;
-}
-
-.completed-text {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
+/* styles... */
 </style>

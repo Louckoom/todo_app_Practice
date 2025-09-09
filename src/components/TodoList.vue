@@ -1,69 +1,34 @@
 <template>
-  <v-container>
-    <TodoItem
-      v-for="todo in todos"
-      :key="todo.id"
-      :todo="todo"
-      @check-todo="checkTodo"
-      @delete-todo="deleteTodo"
-      @add-sub-todo="addSubTodo"
-    />
-
-    <AddTodoButton @add-todo="addTodo" />
-  </v-container>
+  <div class="px-3">
+    <div v-for="todo in todos" :key="todo.id">
+      <TodoItem 
+        :todo="todo"
+        @check-todo="emit('check-todo', $event)"
+        @delete-todo="emit('delete-todo', $event)"
+        @add-sub-todo="emit('add-sub-todo', $event)"
+      />
+      <div v-if="todo.subTodos && todo.subTodos.length > 0" class="pl-6">
+        <TodoList 
+          :todos="todo.subTodos" 
+          @check-todo="emit('check-todo', $event)"
+          @delete-todo="emit('delete-todo', $event)"
+          @add-sub-todo="emit('add-sub-todo', $event)"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-  import { ref, watch, onMounted } from 'vue';
+  import { defineProps, defineEmits } from 'vue';
   import TodoItem from './TodoItem.vue';
-  import AddTodoButton from './AddTodoButton.vue';
 
-  const todos = ref([]);
-
-  // Récupère les données du localStorage au chargement de la page
-  onMounted(() => {
-    const savedTodos = localStorage.getItem('todos');
-    if (savedTodos) {
-      todos.value = JSON.parse(savedTodos);
+  const props = defineProps({
+    todos: {
+      type: Array,
+      required: true
     }
   });
 
-  // Sauvegarde les données dans le localStorage à chaque modification
-  watch(todos, (newTodos) => {
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-  }, { deep: true });
-
-  const addTodo = () => {
-    const newTodo = {
-      id: Date.now(),
-      text: "Nouvelle tâche",
-      completed: false,
-      subTodos: []
-    };
-    todos.value.push(newTodo);
-  };
-
-  const checkTodo = (id) => {
-    const todo = todos.value.find(t => t.id === id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
-  };
-
-  const addSubTodo = (parentId) => {
-  const parentTodo = todos.value.find(t => t.id === parentId);
-  if (parentTodo) {
-    const newSubTodo = {
-      id: Date.now(),
-      text: "Nouvelle sous-tâche",
-      completed: false,
-      subTodos: []
-    };
-    parentTodo.subTodos.push(newSubTodo);
-  }
-};
-
-  const deleteTodo = (id) => {
-    todos.value = todos.value.filter(t => t.id !== id);
-  };
+  const emit = defineEmits(['check-todo', 'delete-todo', 'add-sub-todo']);
 </script>
